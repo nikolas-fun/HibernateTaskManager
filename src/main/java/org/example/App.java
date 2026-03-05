@@ -4,6 +4,7 @@ import org.example.config.HibernateUtil;
 import org.example.dao.UserDAO;
 import org.example.models.Task;
 import org.example.models.User;
+import org.example.service.UserService;
 import org.example.supportEnum.Category;
 import org.example.supportEnum.Status;
 import org.hibernate.SessionFactory;
@@ -35,7 +36,12 @@ public class App
 
 
         UserDAO userDAO = new UserDAO();
-        userDAO.save(user);
+
+        UserService userService = new UserService(userDAO);
+
+
+        userService.save(user);
+
 
     }
 }
