@@ -39,12 +39,12 @@ public class TaskDAO {
             throw new NullPointerException("Task not found");
         }
     }
-    public long findCountTaskByUserId(Long id) {
+    public Optional<Long> findCountTaskByUserId(Long id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 
-            return  (long) session.createQuery("select Count(u) from Task u where u.user.id =:id ")
+            return  ( Optional<Long>) session.createQuery("select Count(u) from Task u where u.user.id =:id ")
                     .setParameter("id", id)
-                    .uniqueResult();
+                    .uniqueResultOptional();
 
         } catch (Exception e) {
             throw new NullPointerException("Task not found");
@@ -81,10 +81,6 @@ public class TaskDAO {
 
             Task taskFromDB = session.find(Task.class, id);   //DELETE FROM Task WHERE id = ?
 
-            if (taskFromDB == null) {
-                throw new NullPointerException("Task not found");
-            }
-
             session.remove(taskFromDB);
 
             transaction.commit();
@@ -92,4 +88,21 @@ public class TaskDAO {
             e.printStackTrace();
         }
     }
-}
+
+
+    public boolean existById(long id) {
+
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("select 1 from Task u where u.id =:id")// ?
+                    .setParameter("id", id)
+                    .setMaxResults(1)
+                    .uniqueResultOptional()
+                    .isPresent();
+
+
+        } catch (Exception e) {
+            throw new NullPointerException("Task not found");
+
+        }
+    }
+    }

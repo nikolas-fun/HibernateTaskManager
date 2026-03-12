@@ -43,11 +43,9 @@ public class Task {
 
 
     public Task(String title, String description, LocalDate dueDate, User user, Category category, Status status) {
-        this.title = title;
-        this.description = description;
-        this.dueDate = dueDate;
-        this.user = user;
-        this.category = category;
-        this.status = status;
+
+    }
+
+    public Object getEmail() {
     }
 }

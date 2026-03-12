@@ -1,19 +1,6 @@
 package org.example;
 
-import org.example.config.HibernateUtil;
-import org.example.dao.UserDAO;
-import org.example.models.Task;
-import org.example.models.User;
-import org.example.service.UserService;
-import org.example.supportEnum.Category;
-import org.example.supportEnum.Status;
-import org.hibernate.SessionFactory;
-
-import java.time.LocalDate;
-import java.time.Month;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import org.example.smtp_config.SendEmail;
 
 
 /**
@@ -24,7 +11,7 @@ public class App
 {
     public static void main( String[] args )
     {
-        SessionFactory sessionFactory  = HibernateUtil.getSessionFactory();
+   /*     SessionFactory sessionFactory  = HibernateUtil.getSessionFactory();
 
 
         List<Task> tasks = new ArrayList<>();
@@ -40,8 +27,12 @@ public class App
         UserService userService = new UserService(userDAO);
 
 
-        userService.save(user);
+        userService.save(user);*/
 
+
+        SendEmail emailSender = new SendEmail();
+
+        emailSender.sendEmail("007rydik007@gmail.com", "Test Subject", "Лучше б я на стройку пошёл");
 
     }
 }

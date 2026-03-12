@@ -6,7 +6,11 @@ https://www.baeldung.com/jpa-joincolumn-vs-mappedby
 
 https://nehabudhirajaa.medium.com/jpa-relationships-made-simple-mappedby-vs-joincolumn-explained-8ed41d79d932
 
+ДЗ
 
+1. Вызвать все оставшиеся методы с UserDAO в UserService
+2. Для методов которые возвращают результат (поиск по id тд) сделай проверку через if (есть ли такой результат в бд)
+2. Вызвать все  методы с TaskDAO в TaskService
 
 ДЗ
 
