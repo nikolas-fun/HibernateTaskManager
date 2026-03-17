@@ -1,35 +1,25 @@
 package org.example.service;
 
-import org.example.config.HibernateUtil;
-import org.example.dao.TaskDAO;
-import org.example.dao.UserDAO;
 import org.example.models.Task;
 import org.example.supportEnum.Category;
 import org.example.supportEnum.Status;
-import org.hibernate.Session;
 
 import java.util.List;
-import java.util.Optional;
 
 public class TaskService {
 
 
-    private TaskDAO taskDAO;
+    private org.example.dao.TaskDAO taskDAO;
 
     public TaskService() {
 
-        this.taskDAO = new TaskDAO();
+        this.taskDAO = new org.example.dao.TaskDAO();
     }
 
-    /* public void save1(Task task){
+    public void update(Task task){
+        taskDAO.update(task);
+    }
 
-             if(taskDAO.existById(task.getId())){// true --- задача есть
-                 throw new RuntimeException("Exists task");
-             }
-             else{ //false
-                 taskDAO.save(task);
-             }
-     }*/
     public void save2(Task task) {
 
         if (!taskDAO.existById(task.getId())) {//true

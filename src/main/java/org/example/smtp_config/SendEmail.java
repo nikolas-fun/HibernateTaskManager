@@ -31,7 +31,7 @@ public class SendEmail {
     }
 
     // Метод для отправки текста
-    public boolean sendEmail(String toEmail, String subject, String textContent) {
+    public void sendEmail(String toEmail, String subject, String textContent) {
         try {
             Message message = new MimeMessage(session);
 
@@ -50,11 +50,9 @@ public class SendEmail {
             // Отправка
             Transport.send(message);
             System.out.println("{'result': true, 'message': 'Email sent'}");
-            return true;
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("{'result': false, 'message': '" + e.getMessage() + "'}");
-            return false;
         }
     }
 }

@@ -2,6 +2,7 @@ package org.example.dao;
 
 import org.example.config.HibernateUtil;
 import org.example.models.Task;
+import org.example.models.User;
 import org.example.supportEnum.Category;
 import org.example.supportEnum.Status;
 import org.hibernate.Session;
@@ -51,6 +52,18 @@ public class TaskDAO {
         }
     }
 
+    public Optional<Task> findByUserId(Long userId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+
+            return   session.createQuery("select u from Task u where u.user.id =:userId ")
+                    .setParameter("userId", userId)
+                    .uniqueResultOptional();
+
+        } catch (Exception e) {
+            throw new NullPointerException("Task not found");
+        }
+    }
+
 
     public List<Task> findByCategory(Category category) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -90,7 +103,7 @@ public class TaskDAO {
     }
 
 
-    public boolean existById(long id) {
+    public boolean existById(Long id) {
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.createQuery("select 1 from Task u where u.id =:id")// ?
@@ -103,6 +116,21 @@ public class TaskDAO {
         } catch (Exception e) {
             throw new NullPointerException("Task not found");
 
+        }
+    }
+
+    public void update(Task task){
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+
+            session.merge(task);
+
+            transaction.commit();
+
+        }
+        catch (Exception e) {
+
+            throw new RuntimeException("Task does not update");
         }
     }
     }

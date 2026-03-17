@@ -1,16 +1,18 @@
 package org.example.service;
 
-import org.example.dao.UserDAO;
 import org.example.models.User;
+import org.example.smtp_config.SendEmail;
 
 import java.util.Optional;
 
 public class UserService {
 
-    private UserDAO userDAO;
+    private org.example.dao.UserDAO userDAO;
+    private SendEmail sendEmail;
 
     public UserService() {
-        this.userDAO = new UserDAO();
+        this.userDAO = new org.example.dao.UserDAO();
+        this.sendEmail = new SendEmail();
     }
 
 
@@ -21,8 +23,14 @@ public class UserService {
         }
         else{
             userDAO.save(user);
+            sendEmail.sendEmail(user.getEmail(), "Registration", "Welcome " + user.getName());
         }
     }
+
+    public void update(User user){
+        userDAO.update(user);
+    }
+
 
     public User findByEmail(String email) {
 

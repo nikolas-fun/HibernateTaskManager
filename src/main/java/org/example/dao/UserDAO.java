@@ -112,6 +112,20 @@ public class UserDAO {
 
         }
     }
+    public void update(User user){
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+
+            session.merge(user);
+
+            transaction.commit();
+
+        }
+        catch (Exception e) {
+
+            throw new RuntimeException("User dont update");
+        }
+    }
 
 
 }
