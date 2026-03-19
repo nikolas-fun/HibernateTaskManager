@@ -28,7 +28,9 @@ public class Comment {
 
     @ManyToOne
     private Task task;
-public Comment(String text){
+public Comment(String text, User user , Task task){
     this.text = text;
+    this.user = user;
+    this.task = task;
 }
 }

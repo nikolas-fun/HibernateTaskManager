@@ -1,6 +1,7 @@
 package org.example.dao;
 
 import org.example.config.HibernateUtil;
+import org.example.models.Comment;
 import org.example.models.Task;
 import org.example.models.User;
 import org.example.supportEnum.Category;
@@ -19,6 +20,17 @@ public class TaskDAO {
 	-- Поиск по категориям
 	-- Поиск по статусу
 	-- Удаление по id*/
+
+    public List<Task> findAll() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+
+            return session.createQuery(" from Task t ", Task.class)
+                    .list();
+
+        } catch (Exception e) {
+            throw new NullPointerException("Task not found");
+        }
+    }
 
    public void save(Task task) {
 

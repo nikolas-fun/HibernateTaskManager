@@ -32,7 +32,7 @@ public class UserDAO {
 
             if (transaction != null) transaction.rollback();
 
-            throw new RuntimeException("User not found");
+            System.out.println(e.getMessage());
         }
     }
 

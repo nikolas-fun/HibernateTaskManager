@@ -33,12 +33,12 @@ public class User {
     @UpdateTimestamp
     private LocalDate updatedAt;
 
-    public User(String name, String email, int password, boolean active, List<Task> tasks) {
+    public User(String name, String email, int password, boolean active/*, List<Task> tasks*/) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.active = active;
-        this.tasks = tasks;
+       // this.tasks = tasks;
     }
 
     @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})

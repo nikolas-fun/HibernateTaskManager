@@ -16,6 +16,11 @@ public class TaskService {
         this.taskDAO = new org.example.dao.TaskDAO();
     }
 
+    public List<Task> findAll(){
+        return taskDAO.findAll();
+    }
+
+
     public void update(Task task){
         taskDAO.update(task);
     }

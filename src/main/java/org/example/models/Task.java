@@ -41,9 +41,21 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-
     public Task(String title, String description, LocalDate dueDate, User user, Category category, Status status) {
-
+        this.title = title;
+        this.description = description;
+        this.dueDate = dueDate;
+        this.user = user;
+        this.category = category;
+        this.status = status;
     }
 
+    public Task(Long id, String title, String description, LocalDate dueDate, Category category, Status status) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.dueDate = dueDate;
+        this.category = category;
+        this.status = status;
+    }
 }

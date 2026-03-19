@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.models.Task;
 import org.example.models.User;
 import org.example.smtp_config.SendEmail;
 
@@ -23,7 +24,7 @@ public class UserService {
         }
         else{
             userDAO.save(user);
-            sendEmail.sendEmail(user.getEmail(), "Registration", "Welcome " + user.getName());
+          //  sendEmail.sendEmail(user.getEmail(), "Registration", "Welcome " + user.getName());
         }
     }
 
@@ -43,7 +44,9 @@ public class UserService {
 
     }
 
-
+    public User findById(Long id) {
+        return userDAO.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    }
 
     public void deleteByEmail(String email) {
 
