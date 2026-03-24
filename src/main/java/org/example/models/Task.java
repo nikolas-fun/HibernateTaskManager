@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.example.supportEnum.Category;
 import org.example.supportEnum.Status;
 import org.hibernate.annotations.CreationTimestamp;
@@ -50,12 +51,27 @@ public class Task {
         this.status = status;
     }
 
-    public Task(Long id, String title, String description, LocalDate dueDate, Category category, Status status) {
+    public Task(Long id, String title, String description, LocalDate dueDate, User user, Category category, Status status) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
         this.category = category;
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", dueDate=" + dueDate +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", userName=" + user.getName() +
+                ", category=" + category +
+                ", status=" + status +
+                '}';
     }
 }

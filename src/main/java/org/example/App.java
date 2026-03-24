@@ -11,6 +11,8 @@ import org.example.service.TaskService;
 import org.example.service.UserService;
 import org.example.supportEnum.Category;
 import org.example.supportEnum.Status;
+import org.example.use_case.CompleteTaskWithCommentUseCase;
+import org.example.use_case.TransferTasksBetweenUsersUseCase;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -53,6 +55,8 @@ public class App {
         TaskService taskService = new TaskService();
         UserService userService = new UserService();
         CommentService commentService = new CommentService();
+        CompleteTaskWithCommentUseCase completeTaskWithCommentUseCase = new CompleteTaskWithCommentUseCase();
+        TransferTasksBetweenUsersUseCase transferTasksBetweenUsersUseCase = new TransferTasksBetweenUsersUseCase();
 
         boolean startMenu = true;
 
@@ -66,6 +70,13 @@ public class App {
             System.out.println("6. Update User");
             System.out.println("7. Delete Task");
             System.out.println("8. Find Category");
+            System.out.println("9. Transfer Task Between Users");
+            System.out.println("10. Complete Task With Comment ");
+            System.out.println("11. Delete Task");
+            System.out.println("12. Delete User by Email");
+            System.out.println("13. Delete User by Id");
+            System.out.println("14. Exist User Email");
+            System.out.println("15. Find User by Email");
             System.out.println("0. Exit");
             System.out.print("Choose option: ");
 
@@ -99,6 +110,7 @@ public class App {
                 case 2 -> {
                     System.out.println("Please enter the USER ID: ");
                     Long userId = sc.nextLong();
+                    sc.nextLine();
                     User user = userService.findById(userId);
 
                     System.out.println("Please enter the task NAME: ");
@@ -131,10 +143,12 @@ public class App {
                 case 3 -> {
                     System.out.println("Please enter the USER ID: ");
                     Long userId = sc.nextLong();
+                    sc.nextLine();
                     User user = userService.findById(userId);
 
                     System.out.println("Please enter the TASK ID: ");
                     Long taskId = sc.nextLong();
+                    sc.nextLine();
                     Task task = taskService.findById(taskId);
 
                     System.out.println("Please enter the comment: ");
@@ -147,17 +161,41 @@ public class App {
                 }
                 case 4 -> {
                   taskService.findAll().forEach(System.out::println);
+                  ;
+
                 }
                 case 5 -> {
                     System.out.println("Please enter TASK ID: ");
                     Long taskId = sc.nextLong();
+                    sc.nextLine();
+                    Task task = taskService.findById(taskId);
+
+                    System.out.println("Please enter User ID: ");
+                    Long userId = sc.nextLong();
+                    sc.nextLine();
+                    User user = userService.findById(userId);
+
                     System.out.println("Please enter new NAME: ");
-                    String title = sc.next();
+                    String title = sc.nextLine();
+                    sc.nextLine();
+                    if(title !=null &&   !title.isBlank()){
+                       task.setTitle(title);
+                    }
                     System.out.println("Please enter new DESCRIPTION: ");
-                    String description = sc.next();
+                    String description = sc.nextLine();
+                    sc.nextLine();
+                    if(description !=null &&   !description.isBlank()){
+                        task.setDescription(description);
+                    }
                     System.out.println("Please enter the DATE: ");
                     String inputDate = sc.nextLine();
-                    LocalDate dueDay = LocalDate.parse(inputDate);
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+                    sc.nextLine();
+
+                    LocalDate dueDay = LocalDate.parse(inputDate,formatter);
+                    if(inputDate !=null &&   !inputDate.isBlank()){
+                        task.setDueDate(dueDay);
+                    }
                     System.out.println("Please enter the Category   " +
                             "    WORK,\n" +
                             "    STUDY,\n" +
@@ -166,8 +204,11 @@ public class App {
                             "    HOBBY;: ");
 
                     String inputCategory = sc.nextLine().toUpperCase();
+                    sc.nextLine();
                     Category category = Category.valueOf(inputCategory);
-
+                    if(category !=null){
+                        task.setCategory(category);
+                    }
                     System.out.println("Please enter the Status     " +
                             "    NEW,\n" +
                             "    IN_PROGRESS,\n" +
@@ -175,11 +216,13 @@ public class App {
                             "    CANCELLED;");
 
                     String inputStatus = sc.nextLine().toUpperCase();
+                    sc.nextLine();
                     Status status = Status.valueOf(inputStatus);
+                    if(inputStatus !=null){
+                        task.setStatus(status);
+                    }
 
-
-                    Task task = new Task(taskId,title, description, dueDay,category, status);
-
+                    task.setUser(user);
                     taskService.update(task);
 
                     System.out.println("Task updated");
@@ -208,6 +251,66 @@ public class App {
                         System.out.println("Category --> " + task.getCategory());
                         System.out.println("----------------------");
                     }
+                }
+                case 9 -> {
+                    System.out.println("Please write Task ID");
+                    Long fromUserTaskId = sc.nextLong();
+                    System.out.println("Please enter the Person ID to whom the task should be assigned");
+                    Long toUserId = sc.nextLong();
+                    System.out.println("Please enter the comment: ");
+                    String text = sc.nextLine();
+
+                    transferTasksBetweenUsersUseCase.execute(fromUserTaskId, toUserId, text);
+
+                    System.out.println("Task sent");
+
+                }
+                case 10 -> {// проверка
+                    System.out.println("Please write User ID:");
+                    Long userId = sc.nextLong();
+                    System.out.println("Please enter the comment: ");
+                    String text = sc.nextLine();
+                    completeTaskWithCommentUseCase.execute(userId, text);
+
+                    System.out.println("Task completed");
+                }
+                case 11 -> {
+
+                    System.out.print("Enter task id to delete: ");
+                    Long taskId = sc.nextLong();
+
+                    taskService.deleteById(taskId);
+
+                    System.out.println("Task deleted");
+
+                }
+                case 12 -> {
+                    System.out.println("Please enter User Email: ");
+                    String email = sc.nextLine();
+
+                    userService.deleteByEmail(email);
+                    System.out.println("User(email) deleted");
+                }
+                case 13 -> {
+                    System.out.println("Please enter User ID: ");
+                    Long id = sc.nextLong();
+
+                    userService.deleteById(id);
+                    System.out.println("User(id) deleted");
+                }
+                case 14 -> {
+                    System.out.println("Please enter User Email: ");
+                    String email = sc.nextLine();
+
+                    System.out.println(userService.existByEmail(email));
+
+                }
+                case 15 -> {
+                    System.out.println("Please enter User Email: ");
+                    String email = sc.nextLine();
+
+                    System.out.println((userService.findByEmail(email)));
+
                 }
 
             }

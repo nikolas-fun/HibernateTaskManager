@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.dao.TaskDAO;
 import org.example.models.Task;
 import org.example.supportEnum.Category;
 import org.example.supportEnum.Status;
@@ -13,7 +14,7 @@ public class TaskService {
 
     public TaskService() {
 
-        this.taskDAO = new org.example.dao.TaskDAO();
+        this.taskDAO = new TaskDAO();
     }
 
     public List<Task> findAll(){

@@ -24,8 +24,9 @@ public class TaskDAO {
     public List<Task> findAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 
-            return session.createQuery(" from Task t ", Task.class)
+             return session.createQuery(" select t from Task t right join fetch t.user ", Task.class)
                     .list();
+
 
         } catch (Exception e) {
             throw new NullPointerException("Task not found");

@@ -106,7 +106,6 @@ public class UserDAO {
                     .uniqueResultOptional()
                     .isPresent();
 
-
         } catch (Exception e) {
             throw new NullPointerException("User not found");
 

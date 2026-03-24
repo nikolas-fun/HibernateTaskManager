@@ -53,6 +53,9 @@ public class UserService {
 
         userDAO.deleteByEmail(email);
     }
+    public boolean existByEmail(String email) {
+       return userDAO.existByEmail(email);
+    }
 
 
     public void deleteById(Long id) {
