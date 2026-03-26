@@ -68,7 +68,7 @@ public class App {
             System.out.println("4. Show all Tasks");
             System.out.println("5. Update Task");
             System.out.println("6. Update User");
-            System.out.println("7. Delete Task");
+            System.out.println("7. Find Count Task By UserId");
             System.out.println("8. Find Category");
             System.out.println("9. Transfer Task Between Users");
             System.out.println("10. Complete Task With Comment ");
@@ -227,13 +227,40 @@ public class App {
 
                     System.out.println("Task updated");
                 }
+                case 6 -> {
+                    System.out.println("Please enter USER ID: ");
+                    Long userId = sc.nextLong();
+                    User user = userService.findById(userId);
+                    System.out.println("Please enter new NAME: ");
+
+                    String name = sc.nextLine();
+                    if(name !=null && !name.isBlank()){
+                        user.setName(name);
+                    }
+                    sc.nextLine();
+                    System.out.println("Please enter new EMAIL: ");
+                    String email = sc.nextLine();
+                    System.out.println("Please enter new PASSWORD: ");
+                    int password = sc.nextInt();
+
+                    System.out.println("Please enter the ACTIVE(true/false): ");
+                    boolean active = sc.nextBoolean();
+
+                    user.setName(name);
+                    user.setEmail(email);
+                    user.setPassword(password);
+                    user.setActive(active);
+
+                    userService.update(user);
+                    System.out.println("User updated.");
+                }
                 case 7 -> {
-                    System.out.println("Please enter TASK ID: ");
-                    Long taskId = sc.nextLong();
+                    System.out.println("Please enter USER ID: ");
+                    Long userId = sc.nextLong();
+                         Long count = taskService.findCountTaskByUserId(userId);
 
-                    taskService.deleteById(taskId);
+                    System.out.println("Task count = " + count);
 
-                    System.out.println("Task deleted");
                 }
                 case 8 -> {
                     System.out.println("Please enter CATEGORY:   (WORK,\n" +
@@ -253,14 +280,19 @@ public class App {
                     }
                 }
                 case 9 -> {
-                    System.out.println("Please write Task ID");
+                    System.out.println("Please write User ID");
                     Long fromUserTaskId = sc.nextLong();
+
+                    System.out.println("Please write Task ID");
+                    Long targetTaskId = sc.nextLong();
+
                     System.out.println("Please enter the Person ID to whom the task should be assigned");
                     Long toUserId = sc.nextLong();
+                    sc.nextLine();
                     System.out.println("Please enter the comment: ");
                     String text = sc.nextLine();
 
-                    transferTasksBetweenUsersUseCase.execute(fromUserTaskId, toUserId, text);
+                    transferTasksBetweenUsersUseCase.execute(fromUserTaskId, toUserId,targetTaskId, text);
 
                     System.out.println("Task sent");
 
@@ -268,9 +300,13 @@ public class App {
                 case 10 -> {// проверка
                     System.out.println("Please write User ID:");
                     Long userId = sc.nextLong();
+                    sc.nextLine();
+                    System.out.println("Please write Task ID:");
+                    Long taskId = sc.nextLong();
+                    sc.nextLine();
                     System.out.println("Please enter the comment: ");
                     String text = sc.nextLine();
-                    completeTaskWithCommentUseCase.execute(userId, text);
+                    completeTaskWithCommentUseCase.execute(userId,taskId, text);
 
                     System.out.println("Task completed");
                 }
@@ -299,6 +335,7 @@ public class App {
                     System.out.println("User(id) deleted");
                 }
                 case 14 -> {
+                    sc.nextLine();
                     System.out.println("Please enter User Email: ");
                     String email = sc.nextLine();
 
@@ -306,6 +343,7 @@ public class App {
 
                 }
                 case 15 -> {
+                    sc.nextLine();
                     System.out.println("Please enter User Email: ");
                     String email = sc.nextLine();
 

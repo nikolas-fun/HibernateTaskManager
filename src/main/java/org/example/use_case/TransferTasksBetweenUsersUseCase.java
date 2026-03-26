@@ -20,20 +20,27 @@ public class TransferTasksBetweenUsersUseCase {
         this.userDAO = new UserDAO();
         this.taskDAO = new TaskDAO();
     }
-    public void execute(Long fromUserTaskId, Long toUserId, String text) {
+
+    public void execute(Long fromUserId, Long toUserId, Long targetTaskId, String text) {
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
 
-            User fromUser = userDAO.findById(fromUserTaskId).orElseThrow();
+            User fromUser = userDAO.findById(fromUserId).orElseThrow();
             User toUser = userDAO.findById(toUserId).orElseThrow();
 
-            if(fromUser == null || toUser == null){
+            if (fromUser == null || toUser == null) {
                 throw new RuntimeException("User not found");
             }
 
-            Task task = taskDAO.findByUserId(fromUserTaskId).orElseThrow();
+            Task task = taskDAO.findById(targetTaskId).orElseThrow();
+
+            if(!task.getUser().getId().equals(fromUser.getId()) ){
+                throw new RuntimeException("Wrong owner");
+            }
+
             task.setUser(toUser);
+            session.merge(task);
 
             Comment comment = new Comment();
             comment.setText(text);

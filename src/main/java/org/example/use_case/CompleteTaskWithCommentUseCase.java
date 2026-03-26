@@ -23,16 +23,21 @@ public class CompleteTaskWithCommentUseCase {
         this.taskDAO = new TaskDAO();
     }
 
-    public void execute(Long userId, String text) {
+    public void execute(Long userId, Long taskId, String text) {
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
 
             User user = userDAO.findById(userId).orElseThrow();
-            Task task = taskDAO.findByUserId(userId).orElseThrow();
+            Task task = taskDAO.findById(taskId).orElseThrow();
+
+            if(!task.getUser().getId().equals(user.getId()) ){
+                throw new RuntimeException("Wrong owner");
+            }
+
 
             task.setStatus(Status.DONE);
-
+            session.merge(task);
             Comment comment = new Comment();
             comment.setText(text);
             comment.setTask(task);
